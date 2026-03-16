@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { User, CreateUserRequest, UpdateUserRequest } from "@/app/types/user";
 import { createUser, updateUser } from "@/app/services/userService";
 import { FormSkeleton } from "./LoadingSkeleton";
+import { validateEmail } from "@/app/utils/validation";
+import { SUCCESS_MESSAGES } from "@/app/utils/constants";
 
 interface UserFormProps {
   user?: User | null;
@@ -28,11 +30,6 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
     email: false,
     userType: false,
   });
-
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
 
   const getFieldError = (field: string) => {
     if (!touched[field]) return null;
@@ -98,10 +95,10 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
     try {
       if (isEditMode && user) {
         await updateUser(user.id, formData as UpdateUserRequest);
-        setSuccessMessage("User updated successfully!");
+        setSuccessMessage(SUCCESS_MESSAGES.USER_UPDATED);
       } else {
         await createUser(formData as CreateUserRequest);
-        setSuccessMessage("User created successfully!");
+        setSuccessMessage(SUCCESS_MESSAGES.USER_CREATED);
         setFormData({ name: "", email: "", userType: "" });
       }
       onSuccess();

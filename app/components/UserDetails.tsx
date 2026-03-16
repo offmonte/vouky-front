@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { User } from "@/app/types/user";
 import { deleteUser } from "@/app/services/userService";
 import UserForm from "./UserForm";
+import { formatDate } from "@/app/utils/formatting";
 
 interface UserDetailsProps {
   user: User;
@@ -31,16 +32,6 @@ export default function UserDetails({
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   const handleDeleteClick = () => {
     setDeleteConfirm(true);

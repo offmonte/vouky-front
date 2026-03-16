@@ -98,12 +98,6 @@ export default function UserSearch({
           <p className="error-hint">Try using a different ID or create a new user</p>
         </div>
       )}
-
-      {!errorMessage && !user && (
-        <div className="empty-state-search">
-          <p className="empty-state-text">Use the search box above to find a user by their ID</p>
-        </div>
-      )}
     </div>
   );
 }

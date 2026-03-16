@@ -1,7 +1,10 @@
 import { User, CreateUserRequest, UpdateUserRequest } from "@/app/types/user";
 import { USE_MOCK_DATA, mockUsers } from "@/app/config/mock";
-
-const API_BASE_URL = "https://localhost:7082";
+import {
+  API_BASE_URL,
+  MOCK_DELAYS,
+  ERROR_MESSAGES,
+} from "@/app/utils/constants";
 
 // Store mock data in memory (persists during session)
 const mockDatabase: Record<string, User> = { ...mockUsers };
@@ -16,18 +19,18 @@ const generateMockId = () => {
 
 // Get all active users (not deleted)
 const getUsersMock = async (): Promise<User[]> => {
-  await delay(300);
+  await delay(MOCK_DELAYS.FETCH_USERS);
   return Object.values(mockDatabase).filter((user) => !user.deletedAt);
 };
 
 // Get user by ID
 const getUserByIdMock = async (id: string): Promise<User> => {
-  await delay(300);
+  await delay(MOCK_DELAYS.FETCH_USER);
 
   const user = mockDatabase[id];
 
   if (!user || user.deletedAt) {
-    throw new Error("User not found");
+    throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
   }
 
   return user;
@@ -35,19 +38,19 @@ const getUserByIdMock = async (id: string): Promise<User> => {
 
 // Create user
 const createUserMock = async (userData: CreateUserRequest): Promise<User> => {
-  await delay(500);
+  await delay(MOCK_DELAYS.CREATE_USER);
 
   // Check if email already exists in active users
   const activeUsers = Object.values(mockDatabase).filter((u) => !u.deletedAt);
   const emailExists = activeUsers.some((user) => user.email === userData.email);
 
   if (emailExists) {
-    throw new Error("Email already exists");
+    throw new Error(ERROR_MESSAGES.EMAIL_EXISTS);
   }
 
   // Validate required fields
   if (!userData.name || !userData.email || !userData.userType) {
-    throw new Error("All fields are required");
+    throw new Error(ERROR_MESSAGES.VALIDATION_FAILED);
   }
 
   const now = new Date().toISOString();
@@ -70,12 +73,12 @@ const updateUserMock = async (
   id: string,
   userData: UpdateUserRequest
 ): Promise<User> => {
-  await delay(500);
+  await delay(MOCK_DELAYS.UPDATE_USER);
 
   const user = mockDatabase[id];
 
   if (!user || user.deletedAt) {
-    throw new Error("User not found");
+    throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
   }
 
   // Check if email is being changed and if it already exists
@@ -86,7 +89,7 @@ const updateUserMock = async (
     const emailExists = activeUsers.some((u) => u.email === userData.email);
 
     if (emailExists) {
-      throw new Error("Email already exists");
+      throw new Error(ERROR_MESSAGES.EMAIL_EXISTS);
     }
   }
 
@@ -106,12 +109,12 @@ const updateUserMock = async (
 
 // Delete user (soft delete)
 const deleteUserMock = async (id: string): Promise<void> => {
-  await delay(400);
+  await delay(MOCK_DELAYS.DELETE_USER);
 
   const user = mockDatabase[id];
 
   if (!user || user.deletedAt) {
-    throw new Error("User not found");
+    throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
   }
 
   const now = new Date().toISOString();
@@ -134,7 +137,7 @@ export const getUsers = async (): Promise<User[]> => {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch users");
+    throw new Error(ERROR_MESSAGES.FAILED_FETCH_USERS);
   }
 
   return response.json();
@@ -153,11 +156,11 @@ export const getUserById = async (id: string): Promise<User> => {
   });
 
   if (response.status === 404) {
-    throw new Error("User not found");
+    throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
   }
 
   if (!response.ok) {
-    throw new Error("Failed to fetch user");
+    throw new Error(ERROR_MESSAGES.FAILED_FETCH_USER);
   }
 
   return response.json();
@@ -177,16 +180,16 @@ export const createUser = async (userData: CreateUserRequest): Promise<User> => 
   });
 
   if (response.status === 409) {
-    throw new Error("Email already exists");
+    throw new Error(ERROR_MESSAGES.EMAIL_EXISTS);
   }
 
   if (response.status === 400) {
     const error = await response.json();
-    throw new Error(error.message || "Validation error");
+    throw new Error(error.message || ERROR_MESSAGES.VALIDATION_FAILED);
   }
 
   if (!response.ok) {
-    throw new Error("Failed to create user");
+    throw new Error(ERROR_MESSAGES.FAILED_CREATE_USER);
   }
 
   return response.json();
@@ -209,20 +212,20 @@ export const updateUser = async (
   });
 
   if (response.status === 404) {
-    throw new Error("User not found");
+    throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
   }
 
   if (response.status === 409) {
-    throw new Error("Email already exists");
+    throw new Error(ERROR_MESSAGES.EMAIL_EXISTS);
   }
 
   if (response.status === 400) {
     const error = await response.json();
-    throw new Error(error.message || "Validation error");
+    throw new Error(error.message || ERROR_MESSAGES.VALIDATION_FAILED);
   }
 
   if (!response.ok) {
-    throw new Error("Failed to update user");
+    throw new Error(ERROR_MESSAGES.FAILED_UPDATE_USER);
   }
 
   return response.json();
@@ -241,10 +244,10 @@ export const deleteUser = async (id: string): Promise<void> => {
   });
 
   if (response.status === 404) {
-    throw new Error("User not found");
+    throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
   }
 
   if (!response.ok) {
-    throw new Error("Failed to delete user");
+    throw new Error(ERROR_MESSAGES.FAILED_DELETE_USER);
   }
 };
