@@ -9,6 +9,7 @@ import { USE_MOCK_DATA } from "./config/mock";
 export default function Home() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
 
   const handleUserCreated = () => {
     setRefreshKey((prev) => prev + 1);
@@ -17,12 +18,22 @@ export default function Home() {
 
   const handleUserUpdated = () => {
     setRefreshKey((prev) => prev + 1);
+    setSelectedUser(null);
+  };
+
+  const handleSelectUser = (user: any) => {
+    setSelectedUser(user);
+    setShowCreateForm(false);
+  };
+
+  const handleCloseDetails = () => {
+    setSelectedUser(null);
   };
 
   return (
-    <main className="main-page">
+    <main className="main-page" role="main">
       {USE_MOCK_DATA && (
-        <div className="mock-banner">
+        <div className="mock-banner" role="alert">
           <span className="mock-badge">MODO MOCK</span>
           <p className="mock-text">
             Você está utilizando dados pré-estabelecidos. Para usar a API real, altere USE_MOCK_DATA para false em <code>app/config/mock.ts</code>
@@ -31,7 +42,7 @@ export default function Home() {
       )}
 
       <div className="page-header">
-        <h1 className="page-title">User Management System</h1>
+        <h1 className="page-title">👥 User Management System</h1>
         <p className="page-subtitle">
           Manage users with complete CRUD operations
         </p>
@@ -41,17 +52,27 @@ export default function Home() {
         {/* Top Section: List and Create */}
         <div className="top-section">
           <div className="users-list-wrapper">
-            <UserList refreshKey={refreshKey} onSelectUser={() => {}} />
+            <UserList refreshKey={refreshKey} onSelectUser={handleSelectUser} />
           </div>
 
           <div className="sidebar-section">
-            {!showCreateForm ? (
+            {selectedUser ? (
+              <div className="details-sidebar">
+                <UserSearch
+                  onUserUpdated={handleUserUpdated}
+                  onUserSelected={handleSelectUser}
+                  selectedUser={selectedUser}
+                  onCloseDetails={handleCloseDetails}
+                />
+              </div>
+            ) : !showCreateForm ? (
               <div className="create-button-wrapper">
                 <button
                   onClick={() => setShowCreateForm(true)}
                   className="create-user-button"
+                  title="Create a new user"
                 >
-                  + New User
+                  ➕ New User
                 </button>
               </div>
             ) : (
@@ -67,7 +88,9 @@ export default function Home() {
 
         {/* Bottom Section: Search */}
         <div className="bottom-section">
-          <UserSearch onUserUpdated={handleUserUpdated} />
+          {!selectedUser && (
+            <UserSearch onUserUpdated={handleUserUpdated} onUserSelected={handleSelectUser} />
+          )}
         </div>
       </div>
     </main>

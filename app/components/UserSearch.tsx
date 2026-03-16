@@ -7,11 +7,19 @@ import UserDetails from "./UserDetails";
 
 interface UserSearchProps {
   onUserUpdated: () => void;
+  onUserSelected?: (user: User) => void;
+  selectedUser?: User | null;
+  onCloseDetails?: () => void;
 }
 
-export default function UserSearch({ onUserUpdated }: UserSearchProps) {
+export default function UserSearch({
+  onUserUpdated,
+  onUserSelected,
+  selectedUser,
+  onCloseDetails
+}: UserSearchProps) {
   const [searchId, setSearchId] = useState("");
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(selectedUser || null);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -24,6 +32,9 @@ export default function UserSearch({ onUserUpdated }: UserSearchProps) {
     try {
       const foundUser = await getUserById(searchId);
       setUser(foundUser);
+      if (onUserSelected) {
+        onUserSelected(foundUser);
+      }
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Failed to fetch user";
@@ -37,6 +48,9 @@ export default function UserSearch({ onUserUpdated }: UserSearchProps) {
     setSearchId("");
     setUser(null);
     setErrorMessage("");
+    if (onCloseDetails) {
+      onCloseDetails();
+    }
   };
 
   const handleUserUpdated = () => {
@@ -44,10 +58,10 @@ export default function UserSearch({ onUserUpdated }: UserSearchProps) {
     onUserUpdated();
   };
 
-  if (user) {
+  if (user || selectedUser) {
     return (
       <UserDetails
-        user={user}
+        user={user || selectedUser!}
         onClose={handleClear}
         onUpdate={handleUserUpdated}
       />
@@ -55,9 +69,9 @@ export default function UserSearch({ onUserUpdated }: UserSearchProps) {
   }
 
   return (
-    <div className="search-container">
-      <h2 className="search-title">Search User by ID</h2>
-      <form onSubmit={handleSearch} className="search-form">
+    <div className="search-container" role="region" aria-label="User search">
+      <h2 className="search-title">🔍 Search User by ID</h2>
+      <form onSubmit={handleSearch} className="search-form" noValidate>
         <div className="search-input-wrapper">
           <input
             type="text"
@@ -65,11 +79,13 @@ export default function UserSearch({ onUserUpdated }: UserSearchProps) {
             onChange={(e) => setSearchId(e.target.value)}
             placeholder="Enter user ID (GUID)"
             className="search-input"
+            aria-label="Search user by ID"
           />
           <button
             type="submit"
             disabled={loading || !searchId.trim()}
             className="search-button"
+            aria-label={loading ? "Searching..." : "Search for user"}
           >
             {loading ? "Searching..." : "Search"}
           </button>
@@ -77,7 +93,16 @@ export default function UserSearch({ onUserUpdated }: UserSearchProps) {
       </form>
 
       {errorMessage && (
-        <p className="error-message">{errorMessage}</p>
+        <div className="error-state">
+          <p className="error-message">❌ {errorMessage}</p>
+          <p className="error-hint">Try using a different ID or create a new user</p>
+        </div>
+      )}
+
+      {!errorMessage && !user && (
+        <div className="empty-state-search">
+          <p className="empty-state-text">Use the search box above to find a user by their ID</p>
+        </div>
       )}
     </div>
   );
