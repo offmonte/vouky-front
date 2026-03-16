@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { User } from "@/app/types/user";
 import { getUsers } from "@/app/services/userService";
 import { TableSkeleton } from "./LoadingSkeleton";
+import { ITEMS_PER_PAGE } from "@/app/utils/constants";
+import { formatDate } from "@/app/utils/formatting";
 
 interface UserListProps {
   refreshKey: number;
@@ -20,7 +22,6 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
   const [sortField, setSortField] = useState<SortField>("createdAt");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
 
   useEffect(() => {
     fetchUsers();
@@ -81,9 +82,9 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
   };
 
   const sortedUsers = getSortedUsers();
-  const totalPages = Math.ceil(sortedUsers.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedUsers = sortedUsers.slice(startIndex, startIndex + itemsPerPage);
+  const totalPages = Math.ceil(sortedUsers.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedUsers = sortedUsers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const SortIcon = ({ field }: { field: SortField }) => {
     if (sortField !== field) return <span className="sort-icon">⇅</span>;
@@ -161,13 +162,7 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
                     <td className="cell-email">{user.email}</td>
                     <td className="cell-usertype">{user.userType}</td>
                     <td className="cell-date">
-                      {new Date(user.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                      {formatDate(user.createdAt)}
                     </td>
                     <td className="cell-actions">
                       <button
