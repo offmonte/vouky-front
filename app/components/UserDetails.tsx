@@ -48,7 +48,7 @@ export default function UserDetails({
       onClose();
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to delete user";
+        error instanceof Error ? error.message : "Falha ao deletar usuário";
       setDeleteError(message);
     } finally {
       setIsDeleting(false);
@@ -85,14 +85,13 @@ export default function UserDetails({
       aria-labelledby="user-details-title"
     >
       <div className="details-header">
-        <h2 className="details-title" id="user-details-title">👤 User Details</h2>
+        <h2 className="details-title" id="user-details-title">Detalhes do Usuário</h2>
         <button
           onClick={onClose}
           className="close-button"
-          aria-label="Close user details (press Esc)"
-          title="Close (Esc)"
+          aria-label="Fechar detalhes do usuário (pressione Esc)"
+          title="Fechar (Esc)"
         >
-          ✕
         </button>
       </div>
 
@@ -107,21 +106,21 @@ export default function UserDetails({
               </span>
             </div>
             <div className="detail-field">
-              <span className="detail-label">Email:</span>
+              <span className="detail-label">E-mail:</span>
               <span className="detail-value" role="text">{user.email}</span>
             </div>
             <div className="detail-field">
-              <span className="detail-label">User Type:</span>
+              <span className="detail-label">Tipo de Usuário:</span>
               <span className="detail-value" title={user.userType} role="text">
                 {user.userType}
               </span>
             </div>
             <div className="detail-field">
-              <span className="detail-label">Created At:</span>
+              <span className="detail-label">Criado em:</span>
               <span className="detail-value" role="text">{formatDate(user.createdAt)}</span>
             </div>
             <div className="detail-field">
-              <span className="detail-label">Updated At:</span>
+              <span className="detail-label">Atualizado em:</span>
               <span className="detail-value" role="text">{formatDate(user.updatedAt)}</span>
             </div>
           </div>
@@ -132,16 +131,16 @@ export default function UserDetails({
             <button
               onClick={() => setIsEditing(true)}
               className="edit-button"
-              title="Edit this user"
+              title="Editar este usuário"
             >
-              ✏️ Edit
+              Editar
             </button>
             <button
               onClick={handleDeleteClick}
               className="delete-button"
-              title="Delete this user"
+              title="Deletar este usuário"
             >
-              🗑️ Delete
+              Deletar
             </button>
           </div>
         )}
@@ -149,7 +148,7 @@ export default function UserDetails({
         {deleteConfirm && (
           <div className="delete-confirm-section">
             <p className="delete-warning">
-              ⚠️ Are you sure you want to delete <strong>{user.name}</strong>? This action cannot be undone.
+              Tem certeza que deseja deletar <strong>{user.name}</strong>? Esta ação não pode ser desfeita.
             </p>
             {deleteError && (
               <div className="error-message-with-retry">
@@ -161,17 +160,17 @@ export default function UserDetails({
                 onClick={handleConfirmDelete}
                 disabled={isDeleting}
                 className="confirm-delete-button"
-                title="Confirm deletion"
+                title="Confirmar deleção"
               >
-                {isDeleting ? "🗑️ Deleting..." : "🗑️ Yes, Delete"}
+                {isDeleting ? "Deletando..." : "Sim, Deletar"}
               </button>
               <button
                 onClick={handleCancelDelete}
                 disabled={isDeleting}
                 className="cancel-delete-button"
-                title="Cancel deletion"
+                title="Cancelar deleção"
               >
-                ✕ Cancel
+                Cancelar
               </button>
             </div>
           </div>

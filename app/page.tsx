@@ -42,9 +42,9 @@ export default function Home() {
       )}
 
       <div className="page-header">
-        <h1 className="page-title">👥 User Management System</h1>
+        <h1 className="page-title">Sistema de Gerenciamento de Usuários</h1>
         <p className="page-subtitle">
-          Manage users with complete CRUD operations
+          Gerencie usuários com operações CRUD completas
         </p>
       </div>
 
@@ -77,9 +77,9 @@ export default function Home() {
                 <button
                   onClick={() => setShowCreateForm(true)}
                   className="create-user-button"
-                  title="Create a new user"
+                  title="Criar um novo usuário"
                 >
-                  ➕ New User
+                  Novo Usuário
                 </button>
               </div>
             ) : (
