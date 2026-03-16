@@ -37,7 +37,7 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
       setUsers(userList);
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to fetch users";
+        error instanceof Error ? error.message : "Falha ao buscar usuários";
       setErrorMessage(message);
     } finally {
       setLoading(false);
@@ -94,14 +94,14 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
   return (
     <div className="users-section">
       <div className="section-header">
-        <h2 className="section-title">📋 All Users</h2>
+        <h2 className="section-title">📋 Todos os Usuários</h2>
         <button
           onClick={handleRefresh}
           className="refresh-button"
           disabled={loading}
-          title="Refresh user list"
+          title="Atualizar lista de usuários"
         >
-          {loading ? "⏳ Loading..." : "🔄 Refresh"}
+          {loading ? "⏳ Carregando..." : "🔄 Atualizar"}
         </button>
       </div>
 
@@ -109,7 +109,7 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
         <div className="error-message-container">
           <p className="error-message">{errorMessage}</p>
           <button onClick={handleRefresh} className="retry-button">
-            Retry
+            Tentar Novamente
           </button>
         </div>
       )}
@@ -117,7 +117,7 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
       {loading && users.length === 0 ? (
         <TableSkeleton />
       ) : users.length === 0 ? (
-        <p className="no-data-text">📭 No users found. Create your first user to get started!</p>
+        <p className="no-data-text">📭 Nenhum usuário encontrado. Crie seu primeiro usuário para começar!</p>
       ) : (
         <>
           <div className="table-wrapper">
@@ -128,31 +128,31 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
                     <button
                       onClick={() => handleSort("name")}
                       className="sort-header"
-                      title="Sort by name"
+                      title="Ordenar por nome"
                     >
-                      Name <SortIcon field="name" />
+                      Nome <SortIcon field="name" />
                     </button>
                   </th>
                   <th>
                     <button
                       onClick={() => handleSort("email")}
                       className="sort-header"
-                      title="Sort by email"
+                      title="Ordenar por e-mail"
                     >
-                      Email <SortIcon field="email" />
+                      E-mail <SortIcon field="email" />
                     </button>
                   </th>
-                  <th>User Type</th>
+                  <th>Tipo de Usuário</th>
                   <th>
                     <button
                       onClick={() => handleSort("createdAt")}
                       className="sort-header"
-                      title="Sort by created date"
+                      title="Ordenar por data de criação"
                     >
-                      Created At <SortIcon field="createdAt" />
+                      Criado em <SortIcon field="createdAt" />
                     </button>
                   </th>
-                  <th>Actions</th>
+                  <th>Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -168,9 +168,9 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
                       <button
                         onClick={() => onSelectUser(user)}
                         className="action-button"
-                        title="View user details"
+                        title="Ver detalhes do usuário"
                       >
-                        👁️ View
+                        👁️ Ver
                       </button>
                     </td>
                   </tr>
@@ -185,7 +185,7 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
                 onClick={() => setCurrentPage(1)}
                 disabled={currentPage === 1}
                 className="pagination-button"
-                title="First page"
+                title="Primeira página"
               >
                 «
               </button>
@@ -193,20 +193,20 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
                 onClick={() => setCurrentPage(currentPage - 1)}
                 disabled={currentPage === 1}
                 className="pagination-button"
-                title="Previous page"
+                title="Página anterior"
               >
                 ‹
               </button>
 
               <div className="pagination-info">
-                Page <span className="current-page">{currentPage}</span> of {totalPages}
+                Página <span className="current-page">{currentPage}</span> de {totalPages}
               </div>
 
               <button
                 onClick={() => setCurrentPage(currentPage + 1)}
                 disabled={currentPage === totalPages}
                 className="pagination-button"
-                title="Next page"
+                title="Próxima página"
               >
                 ›
               </button>
@@ -214,7 +214,7 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
                 onClick={() => setCurrentPage(totalPages)}
                 disabled={currentPage === totalPages}
                 className="pagination-button"
-                title="Last page"
+                title="Última página"
               >
                 »
               </button>

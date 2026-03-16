@@ -35,9 +35,9 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
     if (!touched[field]) return null;
 
     const value = formData[field as keyof typeof formData];
-    if (!value) return "This field is required";
+    if (!value) return "Este campo é obrigatório";
     if (field === "email" && !validateEmail(value as string))
-      return "Please enter a valid email address";
+      return "Digite um endereço de e-mail válido";
     return null;
   };
 
@@ -104,7 +104,7 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
       onSuccess();
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to save user";
+        error instanceof Error ? error.message : "Falha ao salvar usuário";
       setErrorMessage(message);
     } finally {
       setLoading(false);
@@ -112,14 +112,14 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
   };
 
   return (
-    <div className="form-container" role="region" aria-label={isEditMode ? "Edit user form" : "Create user form"}>
+    <div className="form-container" role="region" aria-label={isEditMode ? "Formulário de edição de usuário" : "Formulário de criação de usuário"}>
       <h2 className="form-title">
-        {isEditMode ? "✏️ Edit User" : "➕ Create User"}
+        {isEditMode ? "✏️ Editar Usuário" : "➕ Criar Usuário"}
       </h2>
       <form onSubmit={handleSubmit} className="form-content" noValidate>
         <div className="form-group">
           <label htmlFor="name" className="form-label">
-            Name <span className="required-indicator">*</span>
+            Nome <span className="required-indicator">*</span>
           </label>
           <div className="form-input-wrapper">
             <input
@@ -130,7 +130,7 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
               onChange={handleChange}
               onBlur={handleBlur}
               required
-              placeholder="Enter user name"
+              placeholder="Digite o nome do usuário"
               className={`form-input ${
                 getFieldError("name") ? "input-error" : ""
               }`}
@@ -147,7 +147,7 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
 
         <div className="form-group">
           <label htmlFor="email" className="form-label">
-            Email <span className="required-indicator">*</span>
+            E-mail <span className="required-indicator">*</span>
           </label>
           <div className="form-input-wrapper">
             <input
@@ -158,7 +158,7 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
               onChange={handleChange}
               onBlur={handleBlur}
               required
-              placeholder="Enter user email"
+              placeholder="Digite o e-mail do usuário"
               className={`form-input ${
                 getFieldError("email") ? "input-error" : ""
               }`}
@@ -175,7 +175,7 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
 
         <div className="form-group">
           <label htmlFor="userType" className="form-label">
-            User Type (GUID) <span className="required-indicator">*</span>
+            Tipo de Usuário (GUID) <span className="required-indicator">*</span>
           </label>
           <div className="form-input-wrapper">
             <input
@@ -186,7 +186,7 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
               onChange={handleChange}
               onBlur={handleBlur}
               required
-              placeholder="Enter user type as GUID"
+              placeholder="Digite o tipo de usuário como GUID"
               className={`form-input ${
                 getFieldError("userType") ? "input-error" : ""
               }`}
@@ -206,24 +206,24 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
             type="submit"
             disabled={loading || !isFormValid()}
             className="submit-button"
-            title={isEditMode ? "Save user changes" : "Create new user"}
+            title={isEditMode ? "Salvar alterações do usuário" : "Criar novo usuário"}
           >
             {loading
               ? isEditMode
-                ? "💾 Saving..."
-                : "✨ Creating..."
+                ? "💾 Salvando..."
+                : "✨ Criando..."
               : isEditMode
-              ? "💾 Save Changes"
-              : "✨ Create User"}
+              ? "💾 Salvar Alterações"
+              : "✨ Criar Usuário"}
           </button>
           {onCancel && (
             <button
               type="button"
               onClick={onCancel}
               className="cancel-button"
-              title="Cancel form"
+              title="Cancelar formulário"
             >
-              ✕ Cancel
+              ✕ Cancelar
             </button>
           )}
         </div>

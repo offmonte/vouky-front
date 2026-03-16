@@ -1,23 +1,23 @@
 /**
- * Shared formatting functions used across the application
+ * Funções de formatação compartilhadas usadas em toda a aplicação
  */
 
 import { DATE_FORMAT_OPTIONS, DATE_LOCALE } from "./constants";
 
 /**
- * Formats an ISO date string to a readable format
- * @param dateString - ISO date string
- * @returns Formatted date string (e.g., "Jan 15, 2024, 10:30 AM")
+ * Formata uma string de data ISO em um formato legível
+ * @param dateString - String de data ISO
+ * @returns String de data formatada (ex.: "15 de jan. de 2024, 10:30 AM")
  */
 export const formatDate = (dateString: string): string => {
   return new Date(dateString).toLocaleDateString(DATE_LOCALE, DATE_FORMAT_OPTIONS);
 };
 
 /**
- * Truncates a string to a maximum length and adds ellipsis if truncated
- * @param text - Text to truncate
- * @param maxLength - Maximum length before truncating
- * @returns Truncated text with ellipsis if needed
+ * Trunca uma string para um comprimento máximo e adiciona reticências se truncada
+ * @param text - Texto para truncar
+ * @param maxLength - Comprimento máximo antes de truncar
+ * @returns Texto truncado com reticências se necessário
  */
 export const truncateText = (text: string, maxLength: number): string => {
   if (text.length <= maxLength) return text;
@@ -25,10 +25,10 @@ export const truncateText = (text: string, maxLength: number): string => {
 };
 
 /**
- * Formats a GUID for display (shortened version)
- * @param guid - Full GUID string
- * @param showFull - If true, returns full GUID; if false, returns first 8 chars
- * @returns Formatted GUID
+ * Formata um GUID para exibição (versão encurtada)
+ * @param guid - String de GUID completo
+ * @param showFull - Se verdadeiro, retorna GUID completo; se falso, retorna os primeiros 8 caracteres
+ * @returns GUID formatado
  */
 export const formatGUID = (guid: string, showFull: boolean = false): string => {
   if (showFull) return guid;

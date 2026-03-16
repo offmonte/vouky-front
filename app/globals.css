@@ -31,7 +31,7 @@ body {
   line-height: 1.5;
 }
 
-/* Main Page Layout */
+/* Layout Principal da Página */
 .main-page {
   min-height: 100vh;
   padding: 2rem;
@@ -213,7 +213,7 @@ body {
   }
 }
 
-/* Mock Banner */
+/* Banner Mock */
 .mock-banner {
   background: #fef08a;
   border: 1px solid #facc15;
@@ -333,7 +333,7 @@ body {
   }
 }
 
-/* Form Container */
+/* Contêiner de Formulário */
 .form-container {
   background: white;
   border: 1px solid var(--border-color);
@@ -479,7 +479,7 @@ body {
   opacity: 0.7;
 }
 
-/* Search Container */
+/* Contêiner de Busca */
 .search-container {
   background: white;
   border: 1px solid var(--border-color);
@@ -593,7 +593,7 @@ body {
   }
 }
 
-/* Messages */
+/* Mensagens */
 .message-container {
   animation: slideInUp 0.3s ease-out;
 }
@@ -683,7 +683,7 @@ body {
   }
 }
 
-/* User Card */
+/* Card de Usuário */
 .user-card {
   background: #f9fafb;
   border: 1px solid var(--border-color);
@@ -757,7 +757,7 @@ body {
   }
 }
 
-/* User Result */
+/* Resultado de Usuário */
 .user-result {
   display: flex;
   flex-direction: column;
@@ -827,7 +827,7 @@ body {
   background: #4b5563;
 }
 
-/* Users Section */
+/* Seção de Usuários */
 .users-section {
   background: white;
   border: 1px solid var(--border-color);
@@ -878,7 +878,7 @@ body {
   border-color: rgba(255, 255, 255, 0.5);
 }
 
-/* Table Styles */
+/* Estilos de Tabela */
 .table-wrapper {
   overflow-x: auto;
   flex: 1;
@@ -1031,7 +1031,7 @@ body {
   outline-offset: 1px;
 }
 
-/* Pagination */
+/* Paginação */
 .pagination-wrapper {
   display: flex;
   justify-content: center;
@@ -1153,7 +1153,7 @@ body {
   margin: 0;
 }
 
-/* Loading Skeleton */
+/* Skeleton de Carregamento */
 .skeleton {
   background: linear-gradient(
     90deg,
@@ -1224,7 +1224,7 @@ body {
   margin: 0;
 }
 
-/* Create Button Wrapper */
+/* Invólucro de Botão Criar */
 .create-button-wrapper {
   display: flex;
   flex-direction: column;
@@ -1299,7 +1299,7 @@ body {
   }
 }
 
-/* Details Container */
+/* Contêiner de Detalhes */
 .details-container {
   background: white;
   border: 1px solid var(--border-color);

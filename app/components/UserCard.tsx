@@ -28,24 +28,24 @@ export default function UserCard({ user }: UserCardProps) {
           <span className="field-value">{user.id}</span>
         </div>
         <div className="card-field">
-          <span className="field-label">Email:</span>
+          <span className="field-label">E-mail:</span>
           <span className="field-value">{user.email}</span>
         </div>
         <div className="card-field">
-          <span className="field-label">User Type:</span>
+          <span className="field-label">Tipo de Usuário:</span>
           <span className="field-value">{user.userType}</span>
         </div>
         <div className="card-field">
-          <span className="field-label">Created At:</span>
+          <span className="field-label">Criado em:</span>
           <span className="field-value">{formatDate(user.createdAt)}</span>
         </div>
         <div className="card-field">
-          <span className="field-label">Updated At:</span>
+          <span className="field-label">Atualizado em:</span>
           <span className="field-value">{formatDate(user.updatedAt)}</span>
         </div>
         {user.deletedAt && (
           <div className="card-field">
-            <span className="field-label">Deleted At:</span>
+            <span className="field-label">Deletado em:</span>
             <span className="field-value">{formatDate(user.deletedAt)}</span>
           </div>
         )}

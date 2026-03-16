@@ -37,7 +37,7 @@ export default function UserSearch({
       }
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to fetch user";
+        error instanceof Error ? error.message : "Falha ao buscar usuário";
       setErrorMessage(message);
     } finally {
       setLoading(false);
@@ -69,25 +69,25 @@ export default function UserSearch({
   }
 
   return (
-    <div className="search-container" role="region" aria-label="User search">
-      <h2 className="search-title">🔍 Search User by ID</h2>
+    <div className="search-container" role="region" aria-label="Busca de usuário">
+      <h2 className="search-title">🔍 Buscar Usuário por ID</h2>
       <form onSubmit={handleSearch} className="search-form" noValidate>
         <div className="search-input-wrapper">
           <input
             type="text"
             value={searchId}
             onChange={(e) => setSearchId(e.target.value)}
-            placeholder="Enter user ID (GUID)"
+            placeholder="Digite o ID do usuário (GUID)"
             className="search-input"
-            aria-label="Search user by ID"
+            aria-label="Buscar usuário por ID"
           />
           <button
             type="submit"
             disabled={loading || !searchId.trim()}
             className="search-button"
-            aria-label={loading ? "Searching..." : "Search for user"}
+            aria-label={loading ? "Buscando..." : "Buscar usuário"}
           >
-            {loading ? "Searching..." : "Search"}
+            {loading ? "Buscando..." : "Buscar"}
           </button>
         </div>
       </form>
@@ -95,7 +95,7 @@ export default function UserSearch({
       {errorMessage && (
         <div className="error-state">
           <p className="error-message">❌ {errorMessage}</p>
-          <p className="error-hint">Try using a different ID or create a new user</p>
+          <p className="error-hint">Tente usar um ID diferente ou crie um novo usuário</p>
         </div>
       )}
     </div>
