@@ -49,6 +49,13 @@ export default function Home() {
       </div>
 
       <div className="main-content">
+        {/* Search Section: Above everything */}
+        <div className="search-section">
+          {!selectedUser && (
+            <UserSearch onUserUpdated={handleUserUpdated} onUserSelected={handleSelectUser} />
+          )}
+        </div>
+
         {/* Top Section: List and Create */}
         <div className="top-section">
           <div className="users-list-wrapper">
@@ -84,13 +91,6 @@ export default function Home() {
               </div>
             )}
           </div>
-        </div>
-
-        {/* Bottom Section: Search */}
-        <div className="bottom-section">
-          {!selectedUser && (
-            <UserSearch onUserUpdated={handleUserUpdated} onUserSelected={handleSelectUser} />
-          )}
         </div>
       </div>
     </main>

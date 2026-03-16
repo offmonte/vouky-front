@@ -64,9 +64,10 @@ body {
   flex-direction: column;
 }
 
-.bottom-section {
+.search-section {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 @media (max-width: 1200px) {
