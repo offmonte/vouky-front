@@ -1,14 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import UserList from "./components/UserList";
 import UserForm from "./components/UserForm";
 import UserSearch from "./components/UserSearch";
 import { USE_MOCK_DATA } from "./config/mock";
 
 export default function Home() {
   const [refreshKey, setRefreshKey] = useState(0);
+  const [showCreateForm, setShowCreateForm] = useState(false);
 
   const handleUserCreated = () => {
+    setRefreshKey((prev) => prev + 1);
+    setShowCreateForm(false);
+  };
+
+  const handleUserUpdated = () => {
     setRefreshKey((prev) => prev + 1);
   };
 
@@ -22,21 +29,46 @@ export default function Home() {
           </p>
         </div>
       )}
+
       <div className="page-header">
-        <h1 className="page-title">User Management</h1>
+        <h1 className="page-title">User Management System</h1>
         <p className="page-subtitle">
-          Create new users and search for existing users
+          Manage users with complete CRUD operations
         </p>
       </div>
 
-      <div className="content-grid">
-        <section className="section">
-          <UserForm onSuccess={handleUserCreated} />
-        </section>
+      <div className="main-content">
+        {/* Top Section: List and Create */}
+        <div className="top-section">
+          <div className="users-list-wrapper">
+            <UserList refreshKey={refreshKey} onSelectUser={() => {}} />
+          </div>
 
-        <section className="section">
-          <UserSearch key={refreshKey} />
-        </section>
+          <div className="sidebar-section">
+            {!showCreateForm ? (
+              <div className="create-button-wrapper">
+                <button
+                  onClick={() => setShowCreateForm(true)}
+                  className="create-user-button"
+                >
+                  + New User
+                </button>
+              </div>
+            ) : (
+              <div className="form-wrapper">
+                <UserForm
+                  onSuccess={handleUserCreated}
+                  onCancel={() => setShowCreateForm(false)}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Bottom Section: Search */}
+        <div className="bottom-section">
+          <UserSearch onUserUpdated={handleUserUpdated} />
+        </div>
       </div>
     </main>
   );

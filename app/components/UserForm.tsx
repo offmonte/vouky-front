@@ -1,22 +1,45 @@
 "use client";
 
-import { useState } from "react";
-import { CreateUserRequest } from "@/app/types/user";
-import { createUser } from "@/app/services/userService";
+import { useState, useEffect } from "react";
+import { User, CreateUserRequest, UpdateUserRequest } from "@/app/types/user";
+import { createUser, updateUser } from "@/app/services/userService";
 
 interface UserFormProps {
+  user?: User | null;
   onSuccess: () => void;
+  onCancel?: () => void;
 }
 
-export default function UserForm({ onSuccess }: UserFormProps) {
-  const [formData, setFormData] = useState<CreateUserRequest>({
-    name: "",
-    email: "",
-    userType: "",
-  });
+export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
+  const isEditMode = !!user;
+  const [formData, setFormData] = useState<CreateUserRequest | UpdateUserRequest>(
+    {
+      name: "",
+      email: "",
+      userType: "",
+    }
+  );
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name,
+        email: user.email,
+        userType: user.userType,
+      });
+    } else {
+      setFormData({
+        name: "",
+        email: "",
+        userType: "",
+      });
+    }
+    setErrorMessage("");
+    setSuccessMessage("");
+  }, [user]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -35,13 +58,18 @@ export default function UserForm({ onSuccess }: UserFormProps) {
     setSuccessMessage("");
 
     try {
-      await createUser(formData);
-      setSuccessMessage("User created successfully!");
-      setFormData({ name: "", email: "", userType: "" });
+      if (isEditMode && user) {
+        await updateUser(user.id, formData as UpdateUserRequest);
+        setSuccessMessage("User updated successfully!");
+      } else {
+        await createUser(formData as CreateUserRequest);
+        setSuccessMessage("User created successfully!");
+        setFormData({ name: "", email: "", userType: "" });
+      }
       onSuccess();
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to create user";
+        error instanceof Error ? error.message : "Failed to save user";
       setErrorMessage(message);
     } finally {
       setLoading(false);
@@ -50,7 +78,9 @@ export default function UserForm({ onSuccess }: UserFormProps) {
 
   return (
     <div className="form-container">
-      <h2 className="form-title">Create User</h2>
+      <h2 className="form-title">
+        {isEditMode ? "Edit User" : "Create User"}
+      </h2>
       <form onSubmit={handleSubmit} className="form-content">
         <div className="form-group">
           <label htmlFor="name" className="form-label">
@@ -100,13 +130,30 @@ export default function UserForm({ onSuccess }: UserFormProps) {
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="submit-button"
-        >
-          {loading ? "Creating..." : "Create User"}
-        </button>
+        <div className="form-buttons">
+          <button
+            type="submit"
+            disabled={loading}
+            className="submit-button"
+          >
+            {loading
+              ? isEditMode
+                ? "Saving..."
+                : "Creating..."
+              : isEditMode
+              ? "Save Changes"
+              : "Create User"}
+          </button>
+          {onCancel && (
+            <button
+              type="button"
+              onClick={onCancel}
+              className="cancel-button"
+            >
+              Cancel
+            </button>
+          )}
+        </div>
       </form>
 
       {successMessage && (

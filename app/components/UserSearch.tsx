@@ -3,9 +3,13 @@
 import { useState } from "react";
 import { User } from "@/app/types/user";
 import { getUserById } from "@/app/services/userService";
-import UserCard from "./UserCard";
+import UserDetails from "./UserDetails";
 
-export default function UserSearch() {
+interface UserSearchProps {
+  onUserUpdated: () => void;
+}
+
+export default function UserSearch({ onUserUpdated }: UserSearchProps) {
   const [searchId, setSearchId] = useState("");
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
@@ -35,9 +39,24 @@ export default function UserSearch() {
     setErrorMessage("");
   };
 
+  const handleUserUpdated = () => {
+    handleClear();
+    onUserUpdated();
+  };
+
+  if (user) {
+    return (
+      <UserDetails
+        user={user}
+        onClose={handleClear}
+        onUpdate={handleUserUpdated}
+      />
+    );
+  }
+
   return (
     <div className="search-container">
-      <h2 className="search-title">Search User</h2>
+      <h2 className="search-title">Search User by ID</h2>
       <form onSubmit={handleSearch} className="search-form">
         <div className="search-input-wrapper">
           <input
@@ -59,15 +78,6 @@ export default function UserSearch() {
 
       {errorMessage && (
         <p className="error-message">{errorMessage}</p>
-      )}
-
-      {user && (
-        <div className="user-result">
-          <UserCard user={user} />
-          <button onClick={handleClear} className="clear-button">
-            Clear
-          </button>
-        </div>
       )}
     </div>
   );

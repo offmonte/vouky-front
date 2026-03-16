@@ -29,4 +29,22 @@ export const mockUsers = {
     updatedAt: "2024-01-10T09:45:00Z",
     deletedAt: null,
   },
+  "550e8400-e29b-41d4-a716-446655440004": {
+    id: "550e8400-e29b-41d4-a716-446655440004",
+    name: "Ana Costa",
+    email: "ana.costa@example.com",
+    userType: "550e8400-e29b-41d4-a716-446655440012",
+    createdAt: "2024-01-12T15:10:00Z",
+    updatedAt: "2024-01-12T15:10:00Z",
+    deletedAt: null,
+  },
+  "550e8400-e29b-41d4-a716-446655440005": {
+    id: "550e8400-e29b-41d4-a716-446655440005",
+    name: "Carlos Ferreira",
+    email: "carlos.ferreira@example.com",
+    userType: "550e8400-e29b-41d4-a716-446655440011",
+    createdAt: "2024-01-18T11:45:00Z",
+    updatedAt: "2024-01-18T11:45:00Z",
+    deletedAt: null,
+  },
 };

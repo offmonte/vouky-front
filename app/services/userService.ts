@@ -1,10 +1,10 @@
-import { User, CreateUserRequest } from "@/app/types/user";
+import { User, CreateUserRequest, UpdateUserRequest } from "@/app/types/user";
 import { USE_MOCK_DATA, mockUsers } from "@/app/config/mock";
 
 const API_BASE_URL = "https://localhost:7082";
 
-// Store created mock users in memory
-const createdMockUsers: Record<string, User> = {};
+// Store mock data in memory (persists during session)
+const mockDatabase: Record<string, User> = { ...mockUsers };
 
 // Simulate API delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -14,15 +14,32 @@ const generateMockId = () => {
   return "550e8400-e29b-41d4-" + Math.random().toString(16).slice(2, 18);
 };
 
-// Mock implementation for creating user
-const createUserMock = async (userData: CreateUserRequest): Promise<User> => {
-  await delay(500); // Simulate network delay
+// Get all active users (not deleted)
+const getUsersMock = async (): Promise<User[]> => {
+  await delay(300);
+  return Object.values(mockDatabase).filter((user) => !user.deletedAt);
+};
 
-  // Check if email already exists in mock users
-  const allUsers = { ...mockUsers, ...createdMockUsers };
-  const emailExists = Object.values(allUsers).some(
-    (user) => user.email === userData.email
-  );
+// Get user by ID
+const getUserByIdMock = async (id: string): Promise<User> => {
+  await delay(300);
+
+  const user = mockDatabase[id];
+
+  if (!user || user.deletedAt) {
+    throw new Error("User not found");
+  }
+
+  return user;
+};
+
+// Create user
+const createUserMock = async (userData: CreateUserRequest): Promise<User> => {
+  await delay(500);
+
+  // Check if email already exists in active users
+  const activeUsers = Object.values(mockDatabase).filter((u) => !u.deletedAt);
+  const emailExists = activeUsers.some((user) => user.email === userData.email);
 
   if (emailExists) {
     throw new Error("Email already exists");
@@ -44,22 +61,106 @@ const createUserMock = async (userData: CreateUserRequest): Promise<User> => {
     deletedAt: null,
   };
 
-  createdMockUsers[newUser.id] = newUser;
+  mockDatabase[newUser.id] = newUser;
   return newUser;
 };
 
-// Mock implementation for getting user by ID
-const getUserByIdMock = async (id: string): Promise<User> => {
-  await delay(300); // Simulate network delay
+// Update user (partial update)
+const updateUserMock = async (
+  id: string,
+  userData: UpdateUserRequest
+): Promise<User> => {
+  await delay(500);
 
-  const allUsers = { ...mockUsers, ...createdMockUsers };
-  const user = allUsers[id];
+  const user = mockDatabase[id];
 
-  if (!user) {
+  if (!user || user.deletedAt) {
     throw new Error("User not found");
   }
 
-  return user;
+  // Check if email is being changed and if it already exists
+  if (userData.email && userData.email !== user.email) {
+    const activeUsers = Object.values(mockDatabase).filter(
+      (u) => !u.deletedAt && u.id !== id
+    );
+    const emailExists = activeUsers.some((u) => u.email === userData.email);
+
+    if (emailExists) {
+      throw new Error("Email already exists");
+    }
+  }
+
+  const now = new Date().toISOString();
+  const updatedUser: User = {
+    ...user,
+    ...userData,
+    id: user.id,
+    createdAt: user.createdAt,
+    updatedAt: now,
+    deletedAt: user.deletedAt,
+  };
+
+  mockDatabase[id] = updatedUser;
+  return updatedUser;
+};
+
+// Delete user (soft delete)
+const deleteUserMock = async (id: string): Promise<void> => {
+  await delay(400);
+
+  const user = mockDatabase[id];
+
+  if (!user || user.deletedAt) {
+    throw new Error("User not found");
+  }
+
+  const now = new Date().toISOString();
+  mockDatabase[id] = {
+    ...user,
+    deletedAt: now,
+  };
+};
+
+export const getUsers = async (): Promise<User[]> => {
+  if (USE_MOCK_DATA) {
+    return getUsersMock();
+  }
+
+  const response = await fetch(`${API_BASE_URL}/users`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch users");
+  }
+
+  return response.json();
+};
+
+export const getUserById = async (id: string): Promise<User> => {
+  if (USE_MOCK_DATA) {
+    return getUserByIdMock(id);
+  }
+
+  const response = await fetch(`${API_BASE_URL}/users/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (response.status === 404) {
+    throw new Error("User not found");
+  }
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch user");
+  }
+
+  return response.json();
 };
 
 export const createUser = async (userData: CreateUserRequest): Promise<User> => {
@@ -91,13 +192,49 @@ export const createUser = async (userData: CreateUserRequest): Promise<User> => 
   return response.json();
 };
 
-export const getUserById = async (id: string): Promise<User> => {
+export const updateUser = async (
+  id: string,
+  userData: UpdateUserRequest
+): Promise<User> => {
   if (USE_MOCK_DATA) {
-    return getUserByIdMock(id);
+    return updateUserMock(id, userData);
   }
 
   const response = await fetch(`${API_BASE_URL}/users/${id}`, {
-    method: "GET",
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
+
+  if (response.status === 404) {
+    throw new Error("User not found");
+  }
+
+  if (response.status === 409) {
+    throw new Error("Email already exists");
+  }
+
+  if (response.status === 400) {
+    const error = await response.json();
+    throw new Error(error.message || "Validation error");
+  }
+
+  if (!response.ok) {
+    throw new Error("Failed to update user");
+  }
+
+  return response.json();
+};
+
+export const deleteUser = async (id: string): Promise<void> => {
+  if (USE_MOCK_DATA) {
+    return deleteUserMock(id);
+  }
+
+  const response = await fetch(`${API_BASE_URL}/users/${id}`, {
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
@@ -108,8 +245,6 @@ export const getUserById = async (id: string): Promise<User> => {
   }
 
   if (!response.ok) {
-    throw new Error("Failed to fetch user");
+    throw new Error("Failed to delete user");
   }
-
-  return response.json();
 };

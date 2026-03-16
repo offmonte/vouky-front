@@ -14,6 +14,12 @@ export interface CreateUserRequest {
   userType: string;
 }
 
+export interface UpdateUserRequest {
+  name?: string;
+  email?: string;
+  userType?: string;
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   data?: T;
