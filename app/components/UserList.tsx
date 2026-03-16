@@ -3,16 +3,24 @@
 import { useEffect, useState } from "react";
 import { User } from "@/app/types/user";
 import { getUsers } from "@/app/services/userService";
+import { TableSkeleton } from "./LoadingSkeleton";
 
 interface UserListProps {
   refreshKey: number;
   onSelectUser: (user: User) => void;
 }
 
+type SortField = "name" | "email" | "createdAt";
+type SortOrder = "asc" | "desc";
+
 export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [sortField, setSortField] = useState<SortField>("createdAt");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     fetchUsers();
@@ -36,75 +44,188 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
   };
 
   const handleRefresh = () => {
+    setCurrentPage(1);
     fetchUsers();
   };
 
-  if (loading && users.length === 0) {
-    return (
-      <div className="users-section">
-        <div className="section-header">
-          <h2 className="section-title">All Users</h2>
-        </div>
-        <p className="loading-text">Loading users...</p>
-      </div>
-    );
-  }
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortOrder("asc");
+    }
+    setCurrentPage(1);
+  };
+
+  const getSortedUsers = () => {
+    const sorted = [...users].sort((a, b) => {
+      let aValue: any = a[sortField];
+      let bValue: any = b[sortField];
+
+      if (sortField === "createdAt") {
+        aValue = new Date(aValue).getTime();
+        bValue = new Date(bValue).getTime();
+      } else {
+        aValue = (aValue as string).toLowerCase();
+        bValue = (bValue as string).toLowerCase();
+      }
+
+      if (sortOrder === "asc") {
+        return aValue > bValue ? 1 : -1;
+      } else {
+        return aValue < bValue ? 1 : -1;
+      }
+    });
+    return sorted;
+  };
+
+  const sortedUsers = getSortedUsers();
+  const totalPages = Math.ceil(sortedUsers.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedUsers = sortedUsers.slice(startIndex, startIndex + itemsPerPage);
+
+  const SortIcon = ({ field }: { field: SortField }) => {
+    if (sortField !== field) return <span className="sort-icon">⇅</span>;
+    return <span className={`sort-icon ${sortOrder}`}>{sortOrder === "asc" ? "↑" : "↓"}</span>;
+  };
 
   return (
     <div className="users-section">
       <div className="section-header">
-        <h2 className="section-title">All Users</h2>
-        <button onClick={handleRefresh} className="refresh-button">
-          Refresh
+        <h2 className="section-title">📋 All Users</h2>
+        <button
+          onClick={handleRefresh}
+          className="refresh-button"
+          disabled={loading}
+          title="Refresh user list"
+        >
+          {loading ? "⏳ Loading..." : "🔄 Refresh"}
         </button>
       </div>
 
       {errorMessage && (
-        <p className="error-message">{errorMessage}</p>
+        <div className="error-message-container">
+          <p className="error-message">{errorMessage}</p>
+          <button onClick={handleRefresh} className="retry-button">
+            Retry
+          </button>
+        </div>
       )}
 
-      {users.length === 0 ? (
-        <p className="no-data-text">No users found</p>
+      {loading && users.length === 0 ? (
+        <TableSkeleton />
+      ) : users.length === 0 ? (
+        <p className="no-data-text">📭 No users found. Create your first user to get started!</p>
       ) : (
-        <div className="table-wrapper">
-          <table className="users-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>User Type</th>
-                <th>Created At</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.id} className="table-row">
-                  <td className="cell-name">{user.name}</td>
-                  <td className="cell-email">{user.email}</td>
-                  <td className="cell-usertype">{user.userType}</td>
-                  <td className="cell-date">
-                    {new Date(user.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </td>
-                  <td className="cell-actions">
+        <>
+          <div className="table-wrapper">
+            <table className="users-table">
+              <thead>
+                <tr>
+                  <th>
                     <button
-                      onClick={() => onSelectUser(user)}
-                      className="action-button"
+                      onClick={() => handleSort("name")}
+                      className="sort-header"
+                      title="Sort by name"
                     >
-                      View
+                      Name <SortIcon field="name" />
                     </button>
-                  </td>
+                  </th>
+                  <th>
+                    <button
+                      onClick={() => handleSort("email")}
+                      className="sort-header"
+                      title="Sort by email"
+                    >
+                      Email <SortIcon field="email" />
+                    </button>
+                  </th>
+                  <th>User Type</th>
+                  <th>
+                    <button
+                      onClick={() => handleSort("createdAt")}
+                      className="sort-header"
+                      title="Sort by created date"
+                    >
+                      Created At <SortIcon field="createdAt" />
+                    </button>
+                  </th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {paginatedUsers.map((user) => (
+                  <tr key={user.id} className="table-row">
+                    <td className="cell-name">{user.name}</td>
+                    <td className="cell-email">{user.email}</td>
+                    <td className="cell-usertype">{user.userType}</td>
+                    <td className="cell-date">
+                      {new Date(user.createdAt).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </td>
+                    <td className="cell-actions">
+                      <button
+                        onClick={() => onSelectUser(user)}
+                        className="action-button"
+                        title="View user details"
+                      >
+                        👁️ View
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {totalPages > 1 && (
+            <div className="pagination-wrapper">
+              <button
+                onClick={() => setCurrentPage(1)}
+                disabled={currentPage === 1}
+                className="pagination-button"
+                title="First page"
+              >
+                «
+              </button>
+              <button
+                onClick={() => setCurrentPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="pagination-button"
+                title="Previous page"
+              >
+                ‹
+              </button>
+
+              <div className="pagination-info">
+                Page <span className="current-page">{currentPage}</span> of {totalPages}
+              </div>
+
+              <button
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="pagination-button"
+                title="Next page"
+              >
+                ›
+              </button>
+              <button
+                onClick={() => setCurrentPage(totalPages)}
+                disabled={currentPage === totalPages}
+                className="pagination-button"
+                title="Last page"
+              >
+                »
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { User } from "@/app/types/user";
 import { deleteUser } from "@/app/services/userService";
 import UserForm from "./UserForm";
@@ -20,6 +20,17 @@ export default function UserDetails({
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [deleteError, setDeleteError] = useState("");
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -76,10 +87,20 @@ export default function UserDetails({
   }
 
   return (
-    <div className="details-container">
+    <div
+      className="details-container"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="user-details-title"
+    >
       <div className="details-header">
-        <h2 className="details-title">User Details</h2>
-        <button onClick={onClose} className="close-button">
+        <h2 className="details-title" id="user-details-title">👤 User Details</h2>
+        <button
+          onClick={onClose}
+          className="close-button"
+          aria-label="Close user details (press Esc)"
+          title="Close (Esc)"
+        >
           ✕
         </button>
       </div>
@@ -90,27 +111,27 @@ export default function UserDetails({
           <div className="details-fields">
             <div className="detail-field">
               <span className="detail-label">ID:</span>
-              <span className="detail-value" title={user.id}>
+              <span className="detail-value" title={user.id} role="text">
                 {user.id}
               </span>
             </div>
             <div className="detail-field">
               <span className="detail-label">Email:</span>
-              <span className="detail-value">{user.email}</span>
+              <span className="detail-value" role="text">{user.email}</span>
             </div>
             <div className="detail-field">
               <span className="detail-label">User Type:</span>
-              <span className="detail-value" title={user.userType}>
+              <span className="detail-value" title={user.userType} role="text">
                 {user.userType}
               </span>
             </div>
             <div className="detail-field">
               <span className="detail-label">Created At:</span>
-              <span className="detail-value">{formatDate(user.createdAt)}</span>
+              <span className="detail-value" role="text">{formatDate(user.createdAt)}</span>
             </div>
             <div className="detail-field">
               <span className="detail-label">Updated At:</span>
-              <span className="detail-value">{formatDate(user.updatedAt)}</span>
+              <span className="detail-value" role="text">{formatDate(user.updatedAt)}</span>
             </div>
           </div>
         </div>
@@ -120,14 +141,16 @@ export default function UserDetails({
             <button
               onClick={() => setIsEditing(true)}
               className="edit-button"
+              title="Edit this user"
             >
-              Edit
+              ✏️ Edit
             </button>
             <button
               onClick={handleDeleteClick}
               className="delete-button"
+              title="Delete this user"
             >
-              Delete
+              🗑️ Delete
             </button>
           </div>
         )}
@@ -135,25 +158,29 @@ export default function UserDetails({
         {deleteConfirm && (
           <div className="delete-confirm-section">
             <p className="delete-warning">
-              Are you sure you want to delete this user? This action cannot be undone.
+              ⚠️ Are you sure you want to delete <strong>{user.name}</strong>? This action cannot be undone.
             </p>
             {deleteError && (
-              <p className="error-message">{deleteError}</p>
+              <div className="error-message-with-retry">
+                <p className="error-message">{deleteError}</p>
+              </div>
             )}
             <div className="confirm-buttons">
               <button
                 onClick={handleConfirmDelete}
                 disabled={isDeleting}
                 className="confirm-delete-button"
+                title="Confirm deletion"
               >
-                {isDeleting ? "Deleting..." : "Yes, Delete"}
+                {isDeleting ? "🗑️ Deleting..." : "🗑️ Yes, Delete"}
               </button>
               <button
                 onClick={handleCancelDelete}
                 disabled={isDeleting}
                 className="cancel-delete-button"
+                title="Cancel deletion"
               >
-                Cancel
+                ✕ Cancel
               </button>
             </div>
           </div>
