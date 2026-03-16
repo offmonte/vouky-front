@@ -70,7 +70,7 @@ export default function UserSearch({
 
   return (
     <div className="search-container" role="region" aria-label="Busca de usuário">
-      <h2 className="search-title">🔍 Buscar Usuário por ID</h2>
+      <h2 className="search-title">Buscar Usuário por ID</h2>
       <form onSubmit={handleSearch} className="search-form" noValidate>
         <div className="search-input-wrapper">
           <input
@@ -94,7 +94,7 @@ export default function UserSearch({
 
       {errorMessage && (
         <div className="error-state">
-          <p className="error-message">❌ {errorMessage}</p>
+          <p className="error-message">{errorMessage}</p>
           <p className="error-hint">Tente usar um ID diferente ou crie um novo usuário</p>
         </div>
       )}

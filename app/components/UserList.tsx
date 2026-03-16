@@ -94,14 +94,14 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
   return (
     <div className="users-section">
       <div className="section-header">
-        <h2 className="section-title">📋 Todos os Usuários</h2>
+        <h2 className="section-title">Todos os Usuários</h2>
         <button
           onClick={handleRefresh}
           className="refresh-button"
           disabled={loading}
           title="Atualizar lista de usuários"
         >
-          {loading ? "⏳ Carregando..." : "🔄 Atualizar"}
+          {loading ? "Carregando..." : "Atualizar"}
         </button>
       </div>
 
@@ -117,7 +117,7 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
       {loading && users.length === 0 ? (
         <TableSkeleton />
       ) : users.length === 0 ? (
-        <p className="no-data-text">📭 Nenhum usuário encontrado. Crie seu primeiro usuário para começar!</p>
+        <p className="no-data-text">Nenhum usuário encontrado. Crie seu primeiro usuário para começar!</p>
       ) : (
         <>
           <div className="table-wrapper">
@@ -170,7 +170,7 @@ export default function UserList({ refreshKey, onSelectUser }: UserListProps) {
                         className="action-button"
                         title="Ver detalhes do usuário"
                       >
-                        👁️ Ver
+                        Ver
                       </button>
                     </td>
                   </tr>

@@ -85,14 +85,13 @@ export default function UserDetails({
       aria-labelledby="user-details-title"
     >
       <div className="details-header">
-        <h2 className="details-title" id="user-details-title">👤 Detalhes do Usuário</h2>
+        <h2 className="details-title" id="user-details-title">Detalhes do Usuário</h2>
         <button
           onClick={onClose}
           className="close-button"
           aria-label="Fechar detalhes do usuário (pressione Esc)"
           title="Fechar (Esc)"
         >
-          ✕
         </button>
       </div>
 
@@ -134,14 +133,14 @@ export default function UserDetails({
               className="edit-button"
               title="Editar este usuário"
             >
-              ✏️ Editar
+              Editar
             </button>
             <button
               onClick={handleDeleteClick}
               className="delete-button"
               title="Deletar este usuário"
             >
-              🗑️ Deletar
+              Deletar
             </button>
           </div>
         )}
@@ -149,7 +148,7 @@ export default function UserDetails({
         {deleteConfirm && (
           <div className="delete-confirm-section">
             <p className="delete-warning">
-              ⚠️ Tem certeza que deseja deletar <strong>{user.name}</strong>? Esta ação não pode ser desfeita.
+              Tem certeza que deseja deletar <strong>{user.name}</strong>? Esta ação não pode ser desfeita.
             </p>
             {deleteError && (
               <div className="error-message-with-retry">
@@ -163,7 +162,7 @@ export default function UserDetails({
                 className="confirm-delete-button"
                 title="Confirmar deleção"
               >
-                {isDeleting ? "🗑️ Deletando..." : "🗑️ Sim, Deletar"}
+                {isDeleting ? "Deletando..." : "Sim, Deletar"}
               </button>
               <button
                 onClick={handleCancelDelete}
@@ -171,7 +170,7 @@ export default function UserDetails({
                 className="cancel-delete-button"
                 title="Cancelar deleção"
               >
-                ✕ Cancelar
+                Cancelar
               </button>
             </div>
           </div>

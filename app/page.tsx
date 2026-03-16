@@ -42,7 +42,7 @@ export default function Home() {
       )}
 
       <div className="page-header">
-        <h1 className="page-title">👥 Sistema de Gerenciamento de Usuários</h1>
+        <h1 className="page-title">Sistema de Gerenciamento de Usuários</h1>
         <p className="page-subtitle">
           Gerencie usuários com operações CRUD completas
         </p>
@@ -79,7 +79,7 @@ export default function Home() {
                   className="create-user-button"
                   title="Criar um novo usuário"
                 >
-                  ➕ Novo Usuário
+                  Novo Usuário
                 </button>
               </div>
             ) : (

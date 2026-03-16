@@ -114,7 +114,7 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
   return (
     <div className="form-container" role="region" aria-label={isEditMode ? "Formulário de edição de usuário" : "Formulário de criação de usuário"}>
       <h2 className="form-title">
-        {isEditMode ? "✏️ Editar Usuário" : "➕ Criar Usuário"}
+        {isEditMode ? "Editar Usuário" : "Criar Usuário"}
       </h2>
       <form onSubmit={handleSubmit} className="form-content" noValidate>
         <div className="form-group">
@@ -210,11 +210,11 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
           >
             {loading
               ? isEditMode
-                ? "💾 Salvando..."
-                : "✨ Criando..."
+                ? "Salvando..."
+                : "Criando..."
               : isEditMode
-              ? "💾 Salvar Alterações"
-              : "✨ Criar Usuário"}
+              ? "Salvar Alterações"
+              : "Criar Usuário"}
           </button>
           {onCancel && (
             <button
@@ -223,7 +223,7 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
               className="cancel-button"
               title="Cancelar formulário"
             >
-              ✕ Cancelar
+              Cancelar
             </button>
           )}
         </div>
@@ -231,12 +231,12 @@ export default function UserForm({ user, onSuccess, onCancel }: UserFormProps) {
 
       {successMessage && (
         <div className="message-container">
-          <p className="success-message">✓ {successMessage}</p>
+          <p className="success-message">{successMessage}</p>
         </div>
       )}
       {errorMessage && (
         <div className="message-container">
-          <p className="error-message">⚠ {errorMessage}</p>
+          <p className="error-message">{errorMessage}</p>
         </div>
       )}
     </div>
