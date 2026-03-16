@@ -1,161 +1,161 @@
-# 👥 User Management System
+# 👥 Sistema de Gerenciamento de Usuários
 
-A complete **CRUD (Create, Read, Update, Delete)** user management application built with **Next.js 16** and **React 19**. Features a clean, responsive interface with both mock and real API modes.
-
----
-
-## 📋 Table of Contents
-
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Running the Application](#running-the-application)
-- [Configuration](#configuration)
-- [Code Organization](#code-organization)
-- [Components Guide](#components-guide)
-- [Services Guide](#services-guide)
-- [Available Scripts](#available-scripts)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
+Uma aplicação completa de gerenciamento de usuários com **CRUD (Criar, Ler, Atualizar, Deletar)** construída com **Next.js 16** e **React 19**. Oferece uma interface limpa e responsiva com modos mock e API real.
 
 ---
 
-## ✨ Features
+## 📋 Índice
 
-✅ **User Management**
-- List all users with sorting and pagination
-- Create new users with validation
-- View detailed user information
-- Edit existing user information
-- Soft delete users (marked as deleted, not removed from DB)
-
-✅ **Search & Filter**
-- Search users by ID (GUID format)
-- Sort by name, email, or creation date
-- Pagination (10 items per page)
-
-✅ **Dual Mode Support**
-- **Mock Mode** (default): In-memory database for local development
-- **Real API Mode**: Connect to external REST API
-
-✅ **User Experience**
-- Clean and responsive design
-- Form validation with error messages
-- Loading skeletons while fetching data
-- Success/error notifications
-- Dark mode support
-- Accessible (ARIA attributes)
-
-✅ **Data Validation**
-- Email format validation
-- Required field validation
-- Email uniqueness checks
-- Real-time error feedback
+- [Funcionalidades](#funcionalidades)
+- [Stack Tecnológico](#stack-tecnológico)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Começando](#começando)
+- [Executando a Aplicação](#executando-a-aplicação)
+- [Configuração](#configuração)
+- [Organização do Código](#organização-do-código)
+- [Guia de Componentes](#guia-de-componentes)
+- [Guia de Serviços](#guia-de-serviços)
+- [Scripts Disponíveis](#scripts-disponíveis)
+- [Implantação](#implantação)
+- [Contribuindo](#contribuindo)
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ Funcionalidades
 
-| Technology | Version | Purpose |
-|-----------|---------|---------|
-| **Next.js** | 16.1.6 | React framework with SSR |
-| **React** | 19.2.3 | UI library |
-| **TypeScript** | ^5 | Type safety |
-| **CSS** | Custom | Styling (no Tailwind utilities) |
-| **ESLint** | ^9 | Code linting |
+✅ **Gerenciamento de Usuários**
+- Listar todos os usuários com ordenação e paginação
+- Criar novos usuários com validação
+- Visualizar informações detalhadas do usuário
+- Editar informações de usuários existentes
+- Deletar usuários com soft delete (marcados como deletados, não removidos do BD)
+
+✅ **Busca e Filtro**
+- Buscar usuários por ID (formato GUID)
+- Ordenar por nome, e-mail ou data de criação
+- Paginação (10 itens por página)
+
+✅ **Suporte Duplo Modo**
+- **Modo Mock** (padrão): Banco de dados em memória para desenvolvimento local
+- **Modo API Real**: Conectar a API REST externa
+
+✅ **Experiência do Usuário**
+- Design limpo e responsivo
+- Validação de formulário com mensagens de erro
+- Skeletons de carregamento durante busca de dados
+- Notificações de sucesso/erro
+- Suporte a modo escuro
+- Acessível (atributos ARIA)
+
+✅ **Validação de Dados**
+- Validação de formato de e-mail
+- Validação de campo obrigatório
+- Verificação de unicidade de e-mail
+- Feedback de erro em tempo real
 
 ---
 
-## 📁 Project Structure
+## 🛠️ Stack Tecnológico
+
+| Tecnologia | Versão | Propósito |
+|-----------|--------|----------|
+| **Next.js** | 16.1.6 | Framework React com SSR |
+| **React** | 19.2.3 | Biblioteca de UI |
+| **TypeScript** | ^5 | Segurança de tipo |
+| **CSS** | Customizado | Estilos (sem Tailwind) |
+| **ESLint** | ^9 | Linting de código |
+
+---
+
+## 📁 Estrutura do Projeto
 
 ```
 vouky-front/
 ├── app/
-│   ├── layout.tsx                 # Root layout & HTML structure
-│   ├── page.tsx                   # Main application page (Home)
-│   ├── globals.css                # Global styles & CSS variables
+│   ├── layout.tsx                 # Layout raiz & estrutura HTML
+│   ├── page.tsx                   # Página principal da aplicação
+│   ├── globals.css                # Estilos globais & variáveis CSS
 │   │
 │   ├── components/
-│   │   ├── UserList.tsx           # List users with sorting/pagination
-│   │   ├── UserForm.tsx           # Create/Edit user form
-│   │   ├── UserSearch.tsx         # Search users by ID
-│   │   ├── UserDetails.tsx        # Display & manage user details
-│   │   ├── UserCard.tsx           # Presentational user card
-│   │   └── LoadingSkeleton.tsx    # Skeleton loaders
+│   │   ├── UserList.tsx           # Listar usuários com sort/paginação
+│   │   ├── UserForm.tsx           # Formulário criar/editar usuário
+│   │   ├── UserSearch.tsx         # Buscar usuários por ID
+│   │   ├── UserDetails.tsx        # Exibir & gerenciar detalhes
+│   │   ├── UserCard.tsx           # Card apresentação usuário
+│   │   └── LoadingSkeleton.tsx    # Carregadores Skeleton
 │   │
 │   ├── services/
-│   │   └── userService.ts         # API service (mock + real)
+│   │   └── userService.ts         # Serviço API (mock + real)
 │   │
 │   ├── types/
-│   │   └── user.ts                # TypeScript interfaces
+│   │   └── user.ts                # Interfaces TypeScript
 │   │
 │   └── config/
-│       └── mock.ts                # Mock data & toggle
+│       └── mock.ts                # Dados mock & toggle
 │
-├── public/                         # Static assets
+├── public/                         # Ativos estáticos
 │   └── *.svg
 │
-├── package.json                   # Dependencies & scripts
-├── tsconfig.json                  # TypeScript configuration
-├── next.config.ts                 # Next.js configuration
-├── postcss.config.mjs             # PostCSS configuration
-├── eslint.config.mjs              # ESLint configuration
-└── README.md                       # This file
+├── package.json                   # Dependências & scripts
+├── tsconfig.json                  # Configuração TypeScript
+├── next.config.ts                 # Configuração Next.js
+├── postcss.config.mjs             # Configuração PostCSS
+├── eslint.config.mjs              # Configuração ESLint
+└── README.md                       # Este arquivo
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Começando
 
-### Prerequisites
+### Pré-requisitos
 
-Before you begin, make sure you have installed:
-- **Node.js** (v18 or higher recommended)
-- **npm**, **yarn**, **pnpm**, or **bun** package manager
+Antes de começar, certifique-se de ter instalado:
+- **Node.js** (v18 ou superior recomendado)
+- **npm**, **yarn**, **pnpm** ou **bun** gerenciador de pacotes
 
-### Installation
+### Instalação
 
-1. **Clone the repository**
+1. **Clone o repositório**
    ```bash
    git clone <repository-url>
    cd vouky-front
    ```
 
-2. **Install dependencies**
+2. **Instale as dependências**
    ```bash
    npm install
-   # or
+   # ou
    yarn install
-   # or
+   # ou
    pnpm install
    ```
 
 ---
 
-## 🏃 Running the Application
+## 🏃 Executando a Aplicação
 
-### Development Mode
+### Modo Desenvolvimento
 
-Start the development server:
+Inicie o servidor de desenvolvimento:
 
 ```bash
 npm run dev
 ```
 
-The application will be available at **[http://localhost:3000](http://localhost:3000)**
+A aplicação estará disponível em **[http://localhost:3000](http://localhost:3000)**
 
-The page will auto-reload as you make code changes.
+A página será recarregada automaticamente conforme você faz mudanças de código.
 
-### Production Build
+### Build de Produção
 
-Build for production:
+Construa para produção:
 
 ```bash
 npm run build
 ```
 
-Start the production server:
+Inicie o servidor de produção:
 
 ```bash
 npm start
@@ -163,7 +163,7 @@ npm start
 
 ### Linting
 
-Check code quality:
+Verifique a qualidade do código:
 
 ```bash
 npm run lint
@@ -171,81 +171,81 @@ npm run lint
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ Configuração
 
-### Switching Between Mock and Real API
+### Alternando Entre Mock e API Real
 
-The application has two modes controlled by `app/config/mock.ts`:
+A aplicação possui dois modos controlados por `app/config/mock.ts`:
 
-#### Mock Mode (Default)
-Perfect for **local development and testing**:
+#### Modo Mock (Padrão)
+Perfeito para **desenvolvimento local e testes**:
 
 ```typescript
 // app/config/mock.ts
 export const USE_MOCK_DATA = true;
 ```
 
-**Characteristics:**
-- Uses in-memory database (persists during session)
-- No external API required
-- Simulates 300-500ms network latency
-- All data is reset when dev server restarts
-- Perfect for UI/UX testing
+**Características:**
+- Usa banco de dados em memória (persiste durante sessão)
+- Nenhuma API externa necessária
+- Simula latência de rede de 300-500ms
+- Todos os dados são resetados quando dev server reinicia
+- Perfeito para testes de UI/UX
 
-#### Real API Mode
-For **connecting to a real backend**:
+#### Modo API Real
+Para **conectar a um backend real**:
 
 ```typescript
 // app/config/mock.ts
 export const USE_MOCK_DATA = false;
 ```
 
-**Requirements:**
-- An API server must be running at `https://localhost:7082`
-- API must implement standard REST endpoints (see [API Endpoints](#api-endpoints))
-- Handle appropriate HTTP status codes (400, 404, 409, etc.)
+**Requisitos:**
+- Um servidor de API deve estar rodando em `https://localhost:7082`
+- API deve implementar endpoints REST padrão (veja [Endpoints de API](#endpoints-de-api))
+- Lidar com códigos HTTP apropriados (400, 404, 409, etc.)
 
-### API Configuration
+### Configuração de API
 
-The API base URL is configured in `app/services/userService.ts`:
+A URL base da API é configurada em `app/services/userService.ts`:
 
 ```typescript
 const API_BASE_URL = "https://localhost:7082";
 ```
 
-**To change the API URL:**
-1. Open `app/services/userService.ts`
-2. Modify the `API_BASE_URL` constant
-3. Restart the development server
+**Para mudar a URL da API:**
+1. Abra `app/services/userService.ts`
+2. Modifique a constante `API_BASE_URL`
+3. Reinicie o servidor de desenvolvimento
 
-**⚠️ Environment Variables (Recommended)**
+**⚠️ Variáveis de Ambiente (Recomendado)**
 
-For better flexibility, consider moving the API URL to environment variables:
+Para melhor flexibilidade, considere mover a URL da API para variáveis de ambiente:
 
 ```typescript
 // app/services/userService.ts
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://localhost:7082";
 ```
 
-Then create a `.env.local` file:
+Depois crie um arquivo `.env.local`:
 
 ```
 NEXT_PUBLIC_API_BASE_URL=https://api.example.com
 ```
 
-### API Endpoints Required
+### Endpoints de API Necessários
 
-When using Real API Mode, your backend should implement:
+Quando usar Modo API Real, seu backend deve implementar:
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| **GET** | `/users` | Get all active users |
-| **GET** | `/users/{id}` | Get user by ID |
-| **POST** | `/users` | Create new user |
-| **PATCH** | `/users/{id}` | Update user |
-| **DELETE** | `/users/{id}` | Delete user (soft delete) |
+| Método | Endpoint | Descrição |
+|--------|----------|------------|
+| **GET** | `/users` | Obter todos usuários ativos |
+| **GET** | `/users/{id}` | Obter usuário por ID |
+| **POST** | `/users` | Criar novo usuário |
+| **PATCH** | `/users/{id}` | Atualizar usuário |
+| **DELETE** | `/users/{id}` | Deletar usuário (soft delete) |
 
-**Expected Response Format:**
+**Formato de Resposta Esperada:**
 
 ```json
 {
@@ -259,263 +259,263 @@ When using Real API Mode, your backend should implement:
 }
 ```
 
-**Expected Error Response (400, 404, 409):**
+**Resposta de Erro Esperada (400, 404, 409):**
 
 ```json
 {
-  "message": "Error description here"
+  "message": "Descrição do erro aqui"
 }
 ```
 
 ---
 
-## 📚 Code Organization
+## 📚 Organização do Código
 
-### Architecture Principles
+### Princípios de Arquitetura
 
-✅ **Component-Based**: Modular, reusable React components
-✅ **Service Layer**: Centralized API logic in `userService.ts`
-✅ **Type Safety**: Full TypeScript for better developer experience
-✅ **Separation of Concerns**: Components handle UI, services handle data
-✅ **State Management**: Local component state + parent coordination
-✅ **Error Handling**: Graceful error messages to users
-✅ **Accessibility**: ARIA attributes for screen readers
+✅ **Baseado em Componentes**: Componentes React modulares e reutilizáveis
+✅ **Camada de Serviço**: Lógica centralizada de API em `userService.ts`
+✅ **Segurança de Tipo**: TypeScript completo para melhor experiência
+✅ **Separação de Responsabilidades**: Componentes lidam com UI, serviços com dados
+✅ **Gerenciamento de Estado**: Estado local + coordenação de componente pai
+✅ **Tratamento de Erros**: Mensagens de erro elegantes para usuários
+✅ **Acessibilidade**: Atributos ARIA para leitores de tela
 
-### Code Quality Observations
+### Observações de Qualidade do Código
 
-**✅ Strengths:**
-- Clean component structure with clear responsibilities
-- Proper TypeScript typing throughout
-- Good error handling and user feedback
-- Form validation before submission
-- Loading states and skeleton components
-- Responsive design with media queries
-- Accessible markup with ARIA attributes
-- DRY principle (Don't Repeat Yourself) applied well
-- Mock database is easy to toggle
+**✅ Pontos Fortes:**
+- Estrutura limpa de componentes com responsabilidades claras
+- Digitação completa em TypeScript
+- Bom tratamento de erros e feedback do usuário
+- Validação de formulário antes da submissão
+- Estados de carregamento e componentes skeleton
+- Design responsivo com media queries
+- Markup acessível com atributos ARIA
+- Princípio DRY bem aplicado
+- Banco de dados mock é fácil de alternar
 
-**📋 Notes:**
-- Tailwind CSS is installed but not used; styles are custom CSS
-- No global state management library (using component state only)
-- API URL is hardcoded (consider env variables for production)
-- No unit tests present (good opportunity for future improvement)
+**📋 Notas:**
+- Tailwind CSS está instalado mas não é usado; estilos são CSS customizado
+- Nenhuma biblioteca de gerenciamento de estado global (usando state de componente)
+- URL de API é hardcoded (considere variáveis de ambiente para produção)
+- Sem testes unitários presentes (boa oportunidade para melhoria futura)
 
 ---
 
-## 🧩 Components Guide
+## 🧩 Guia de Componentes
 
-### 1. **page.tsx** (Home Page)
-**Location:** `app/page.tsx`
+### 1. **page.tsx** (Página Principal)
+**Localização:** `app/page.tsx`
 
-The main orchestrator component that manages:
-- Top-level state (selected user, show create form, refresh trigger)
-- Layout structure (sidebar, list, search)
-- Component composition
+O componente orquestrador principal que gerencia:
+- Estado de nível superior (usuário selecionado, mostrar formulário, gatilho de atualização)
+- Estrutura de layout (sidebar, lista, busca)
+- Composição de componentes
 
-**Key State:**
+**Estado Principal:**
 ```typescript
-const [refreshKey, setRefreshKey] = useState(0);      // Trigger list refresh
-const [showCreateForm, setShowCreateForm] = useState(false);  // Show form
-const [selectedUser, setSelectedUser] = useState(null);  // Selected user details
+const [refreshKey, setRefreshKey] = useState(0);      // Atualizar lista
+const [showCreateForm, setShowCreateForm] = useState(false);  // Mostrar form
+const [selectedUser, setSelectedUser] = useState(null);  // Detalhes selecionados
 ```
 
 ---
 
 ### 2. **UserList.tsx**
-**Location:** `app/components/UserList.tsx`
+**Localização:** `app/components/UserList.tsx`
 
-Displays a paginated table of users with sorting and filtering capabilities.
+Exibe uma tabela paginada de usuários com capacidades de ordenação e filtro.
 
-**Features:**
-- Fetches all users from service
-- Sorts by name, email, or creation date
-- Client-side pagination (10 items per page)
-- Loading skeleton while fetching
-- Error state with retry option
-- Empty state message
+**Funcionalidades:**
+- Busca todos os usuários do serviço
+- Ordena por nome, e-mail ou data de criação
+- Paginação no cliente (10 itens por página)
+- Skeleton de carregamento durante busca
+- Estado de erro com opção de tentar novamente
+- Mensagem de estado vazio
 
 **Props:**
 ```typescript
 interface UserListProps {
-  refreshKey: number;                    // Triggers refetch when changed
-  onSelectUser: (user: User) => void;   // Called when "View" button clicked
+  refreshKey: number;                    // Dispara busca quando muda
+  onSelectUser: (user: User) => void;   // Chamado quando botão "Ver" clicado
 }
 ```
 
 ---
 
 ### 3. **UserForm.tsx**
-**Location:** `app/components/UserForm.tsx`
+**Localização:** `app/components/UserForm.tsx`
 
-Reusable form for creating and editing users.
+Formulário reutilizável para criar e editar usuários.
 
-**Features:**
-- Create mode: blank form for new users
-- Edit mode: pre-populated with user data
-- Real-time field validation on blur
-- Email uniqueness validation
-- Disabled submit button until form is valid
-- Success/error messages
+**Funcionalidades:**
+- Modo criar: formulário em branco para novos usuários
+- Modo editar: pré-preenchido com dados do usuário
+- Validação de campo em tempo real ao desfocar
+- Validação de unicidade de e-mail
+- Botão submit desabilitado até formulário ser válido
+- Mensagens de sucesso/erro
 
 **Props:**
 ```typescript
 interface UserFormProps {
-  user?: User | null;           // If provided, form enters edit mode
-  onSuccess: () => void;        // Called after successful save
-  onCancel?: () => void;        // Called when cancel button clicked
+  user?: User | null;           // Se fornecido, formulário entra em modo editar
+  onSuccess: () => void;        // Chamado após salvar com sucesso
+  onCancel?: () => void;        // Chamado quando botão cancelar clicado
 }
 ```
 
 ---
 
 ### 4. **UserSearch.tsx**
-**Location:** `app/components/UserSearch.tsx`
+**Localização:** `app/components/UserSearch.tsx`
 
-Search component for finding users by ID and viewing/editing their details.
+Componente de busca para encontrar usuários por ID e visualizar/editar detalhes.
 
-**Features:**
-- Search input for GUID user ID
-- Displays UserDetails when user is found
-- Handles search errors
-- Integrates with UserDetails for edit/delete
+**Funcionalidades:**
+- Campo de entrada para ID de usuário GUID
+- Exibe UserDetails quando usuário é encontrado
+- Trata erros de busca
+- Integra com UserDetails para editar/deletar
 
 **Props:**
 ```typescript
 interface UserSearchProps {
-  onUserUpdated: () => void;              // Called after user is updated/deleted
-  onUserSelected?: (user: User) => void;  // Called when user is selected
-  selectedUser?: User | null;             // Pre-selected user to display
-  onCloseDetails?: () => void;            // Called when details are closed
+  onUserUpdated: () => void;              // Chamado após atualizar/deletar
+  onUserSelected?: (user: User) => void;  // Chamado quando usuário selecionado
+  selectedUser?: User | null;             // Usuário pré-selecionado para exibir
+  onCloseDetails?: () => void;            // Chamado quando detalhes fechados
 }
 ```
 
 ---
 
 ### 5. **UserDetails.tsx**
-**Location:** `app/components/UserDetails.tsx`
+**Localização:** `app/components/UserDetails.tsx`
 
-Dialog component displaying user information with edit and delete options.
+Componente de diálogo exibindo informações do usuário com opções de editar e deletar.
 
-**Features:**
-- View user information
-- Edit button toggles to edit form
-- Delete with confirmation dialog
-- Closes on ESC key
-- Shows errors when operations fail
+**Funcionalidades:**
+- Visualizar informações do usuário
+- Botão editar alterna para formulário de edição
+- Deletar com diálogo de confirmação
+- Fecha com tecla ESC
+- Mostra erros quando operações falham
 
 **Props:**
 ```typescript
 interface UserDetailsProps {
   user: User;
-  onUserUpdated: () => void;    // Called after update/delete
-  onUserSelected: (user: User) => void;  // Called for edit form
-  onCloseDetails: () => void;   // Called to close dialog
+  onUserUpdated: () => void;              // Chamado após atualizar/deletar
+  onUserSelected: (user: User) => void;   // Chamado para formulário edição
+  onCloseDetails: () => void;             // Chamado para fechar diálogo
 }
 ```
 
 ---
 
 ### 6. **LoadingSkeleton.tsx**
-**Location:** `app/components/LoadingSkeleton.tsx`
+**Localização:** `app/components/LoadingSkeleton.tsx`
 
-Skeleton components for loading states.
+Componentes skeleton para estados de carregamento.
 
-**Exported Components:**
-- `TableSkeleton` - Skeleton for user list table
-- `FormSkeleton` - Skeleton for form
-- `DetailsSkeleton` - Skeleton for user details
+**Componentes Exportados:**
+- `TableSkeleton` - Skeleton para tabela de lista de usuários
+- `FormSkeleton` - Skeleton para formulário
+- `DetailsSkeleton` - Skeleton para detalhes de usuário
 
 ---
 
 ### 7. **UserCard.tsx**
-**Location:** `app/components/UserCard.tsx`
+**Localização:** `app/components/UserCard.tsx`
 
-Presentational component for displaying a user card (currently not used in main layout, available for future use).
+Componente de apresentação para exibir um card de usuário (atualmente não usado no layout principal, disponível para uso futuro).
 
 ---
 
-## 🔧 Services Guide
+## 🔧 Guia de Serviços
 
 ### userService.ts
-**Location:** `app/services/userService.ts`
+**Localização:** `app/services/userService.ts`
 
-Centralized service for all user-related API operations. Handles both mock and real API modes.
+Serviço centralizado para todas as operações de API relacionadas a usuários. Trata tanto modos mock quanto API real.
 
-**Exported Functions:**
+**Funções Exportadas:**
 
 ```typescript
-// Get all active (non-deleted) users
+// Obter todos usuários ativos (não deletados)
 export const getUsers = async (): Promise<User[]>
 
-// Get single user by ID
+// Obter usuário único por ID
 export const getUserById = async (id: string): Promise<User>
 
-// Create new user
+// Criar novo usuário
 export const createUser = async (userData: CreateUserRequest): Promise<User>
 
-// Update existing user (partial update)
+// Atualizar usuário existente (atualização parcial)
 export const updateUser = async (id: string, userData: UpdateUserRequest): Promise<User>
 
-// Delete user (soft delete)
+// Deletar usuário (soft delete)
 export const deleteUser = async (id: string): Promise<void>
 ```
 
-**Mock Mode Implementation:**
-- Uses in-memory `mockDatabase` object
-- Simulates network latency (300-500ms delays)
-- Validates email uniqueness
-- Implements soft deletes
-- Returns structured error messages
+**Implementação Modo Mock:**
+- Usa objeto `mockDatabase` em memória
+- Simula latência de rede (atrasos de 300-500ms)
+- Valida unicidade de e-mail
+- Implementa soft deletes
+- Retorna mensagens de erro estruturadas
 
-**Real API Mode Implementation:**
-- Makes HTTP requests using `fetch`
-- Maps HTTP status codes to user-friendly errors
-- Handles 400 (validation), 404 (not found), 409 (conflict) errors
-- Sends JSON request bodies
+**Implementação Modo API Real:**
+- Faz requisições HTTP usando `fetch`
+- Mapeia códigos de status HTTP para erros amigáveis
+- Trata erros 400 (validação), 404 (não encontrado), 409 (conflito)
+- Envia corpos de requisição JSON
 
 ---
 
-## 📝 Types Guide
+## 📝 Guia de Tipos
 
 ### user.ts
-**Location:** `app/types/user.ts`
+**Localização:** `app/types/user.ts`
 
-TypeScript interfaces defining all data structures.
+Interfaces TypeScript definindo todas estruturas de dados.
 
 ```typescript
-// Main user data model
+// Modelo principal de dados de usuário
 interface User {
-  id: string;                    // UUID format
+  id: string;                    // Formato UUID
   name: string;
   email: string;
-  userType: string;              // UUID format for user type
-  createdAt: string;             // ISO 8601 datetime
-  updatedAt: string;             // ISO 8601 datetime
-  deletedAt: string | null;      // Soft delete timestamp
+  userType: string;              // Formato UUID para tipo de usuário
+  createdAt: string;             // Datetime ISO 8601
+  updatedAt: string;             // Datetime ISO 8601
+  deletedAt: string | null;      // Timestamp de soft delete
 }
 
-// Request payload for creating user
+// Payload de requisição para criar usuário
 interface CreateUserRequest {
   name: string;
   email: string;
   userType: string;
 }
 
-// Request payload for updating user
+// Payload de requisição para atualizar usuário
 interface UpdateUserRequest {
   name?: string;
   email?: string;
   userType?: string;
 }
 
-// Generic API response wrapper
+// Invólucro genérico de resposta de API
 interface ApiResponse<T> {
   success: boolean;
   data?: T;
   error?: string;
 }
 
-// API error structure
+// Estrutura de erro de API
 interface ApiError {
   message: string;
   status: number;
@@ -524,136 +524,136 @@ interface ApiError {
 
 ---
 
-## 🎯 Available Scripts
+## 🎯 Scripts Disponíveis
 
-### Development
+### Desenvolvimento
 ```bash
 npm run dev
 ```
-Starts the Next.js development server with hot reload at `localhost:3000`
+Inicia o servidor de desenvolvimento Next.js com hot reload em `localhost:3000`
 
 ### Build
 ```bash
 npm run build
 ```
-Creates an optimized production build in the `.next` directory
+Cria um build otimizado de produção no diretório `.next`
 
-### Production
+### Produção
 ```bash
 npm start
 ```
-Runs the production server (requires `npm run build` first)
+Executa o servidor de produção (requer `npm run build` primeiro)
 
 ### Linting
 ```bash
 npm run lint
 ```
-Runs ESLint to check code quality
+Executa ESLint para verificar qualidade do código
 
 ---
 
-## 🌐 Styling
+## 🌐 Estilos
 
-### Global Styles
-All styles are defined in a single file: `app/globals.css`
+### Estilos Globais
+Todos os estilos são definidos em um único arquivo: `app/globals.css`
 
-**Features:**
-- CSS variables for consistent theming
-- Responsive design with media queries
-- Dark mode support
-- Animations (fade-in, slide-up, error shake)
-- Semantic class names (not using Tailwind utilities)
+**Funcionalidades:**
+- Variáveis CSS para tema consistente
+- Design responsivo com media queries
+- Suporte a modo escuro
+- Animações (fade-in, slide-up, error shake)
+- Nomes de classe semântica (não usando utilitários Tailwind)
 
-**CSS Variables:**
+**Variáveis CSS:**
 ```css
---font-geist-sans     /* Primary font family */
---font-geist-mono     /* Monospace font family */
---background          /* Background color */
---foreground           /* Text color */
-/* ...and more */
+--font-geist-sans     /* Família de fonte primária */
+--font-geist-mono     /* Família de fonte monospace */
+--background          /* Cor de fundo */
+--foreground           /* Cor de texto */
+/* ...e mais */
 ```
 
-**Font Loading:**
-Fonts are loaded via `next/font`:
-- **Geist** (sans-serif) - primary font
-- **Geist Mono** (monospace) - for technical content
+**Carregamento de Fontes:**
+Fontes são carregadas via `next/font`:
+- **Geist** (sans-serif) - fonte primária
+- **Geist Mono** (monospace) - para conteúdo técnico
 
 ---
 
-## 🧪 Future Improvements
+## 🧪 Melhorias Futuras
 
-1. **Testing**
-   - Add unit tests for components
-   - Add integration tests for services
-   - Add E2E tests with Cypress/Playwright
+1. **Testes**
+   - Adicionar testes unitários para componentes
+   - Adicionar testes de integração para serviços
+   - Adicionar testes E2E com Cypress/Playwright
 
-2. **State Management**
-   - Consider React Context or Zustand for global state
-   - Reduce prop drilling in deeply nested components
+2. **Gerenciamento de Estado**
+   - Considerar React Context ou Zustand para estado global
+   - Reduzir prop drilling em componentes profundamente aninhados
 
-3. **API Integration**
-   - Move API URL to environment variables
-   - Add API request/response interceptors
-   - Implement retry logic for failed requests
+3. **Integração de API**
+   - Mover URL de API para variáveis de ambiente
+   - Adicionar interceptadores de requisição/resposta
+   - Implementar lógica de retry para requisições falhadas
 
-4. **Performance**
-   - Add request caching/memoization
-   - Implement virtual scrolling for large lists
-   - Add code splitting and lazy loading
+4. **Desempenho**
+   - Adicionar cache/memoização de requisições
+   - Implementar virtual scrolling para listas grandes
+   - Adicionar code splitting e lazy loading
 
-5. **Features**
-   - Add user avatar/image support
-   - Add bulk operations (select multiple, delete all)
-   - Add export users to CSV/PDF
-   - Add user roles and permissions
+5. **Funcionalidades**
+   - Adicionar suporte a avatar/imagem de usuário
+   - Adicionar operações em massa (selecionar múltiplos, deletar todos)
+   - Adicionar exportação de usuários para CSV/PDF
+   - Adicionar roles e permissões de usuário
 
-6. **Accessibility**
-   - Add keyboard navigation shortcuts
-   - Improve screen reader experience
-   - Add focus indicators
+6. **Acessibilidade**
+   - Adicionar atalhos de navegação com teclado
+   - Melhorar experiência com leitor de tela
+   - Adicionar indicadores de foco
 
 ---
 
-## 🚀 Deployment
+## 🚀 Implantação
 
-### Deploy to Vercel (Recommended)
+### Deploy em Vercel (Recomendado)
 
-1. Push your code to GitHub
-2. Go to [vercel.com](https://vercel.com)
-3. Click "New Project" and select your repository
-4. Vercel will auto-detect Next.js configuration
-5. Set environment variables if needed (e.g., `NEXT_PUBLIC_API_BASE_URL`)
-6. Click "Deploy"
+1. Faça push do seu código para GitHub
+2. Vá para [vercel.com](https://vercel.com)
+3. Clique em "New Project" e selecione seu repositório
+4. Vercel detectará automaticamente a configuração Next.js
+5. Configure variáveis de ambiente se necessário (ex: `NEXT_PUBLIC_API_BASE_URL`)
+6. Clique em "Deploy"
 
-### Deploy to Other Platforms
+### Deploy em Outras Plataformas
 
-Build the application:
+Construa a aplicação:
 ```bash
 npm run build
 ```
 
-The production-ready files will be in the `.next` directory.
+Os arquivos prontos para produção estarão no diretório `.next`.
 
 ---
 
-## 📖 Learning Resources
+## 📖 Recursos de Aprendizado
 
-- **Next.js Documentation:** https://nextjs.org/docs
-- **React Documentation:** https://react.dev
+- **Documentação Next.js:** https://nextjs.org/docs
+- **Documentação React:** https://react.dev
 - **TypeScript Handbook:** https://www.typescriptlang.org/docs
 
 ---
 
-## 📝 License
+## 📝 Licença
 
-This project is private and not licensed for public use.
-
----
-
-## 👤 Author
-
-**Lucas Monte** - Lead Developer
+Este projeto é privado e não é licenciado para uso público.
 
 ---
 
-**Last Updated:** 2024
+## 👤 Autor
+
+**Lucas Monte** - Desenvolvedor Principal
+
+---
+
+**Última Atualização:** 2024
