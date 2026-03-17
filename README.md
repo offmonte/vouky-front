@@ -272,11 +272,17 @@ Quando usar Modo API Real, seu backend deve implementar:
 ### Princípios de Arquitetura
 
 ✅ **Baseado em Componentes**: Componentes React modulares e reutilizáveis
+
 ✅ **Camada de Serviço**: Lógica centralizada de API em `userService.ts`
+
 ✅ **Segurança de Tipo**: TypeScript completo para melhor experiência
+
 ✅ **Separação de Responsabilidades**: Componentes lidam com UI, serviços com dados
+
 ✅ **Gerenciamento de Estado**: Estado local + coordenação de componente pai
+
 ✅ **Tratamento de Erros**: Mensagens de erro elegantes para usuários
+
 ✅ **Acessibilidade**: Atributos ARIA para leitores de tela
 
 ### Observações de Qualidade do Código
