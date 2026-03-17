@@ -1,5 +1,7 @@
 // Set to true to use mock data, false to use real API
-export const USE_MOCK_DATA = true;
+//export const USE_MOCK_DATA = true;
+export const USE_MOCK_DATA = false;
+
 
 export const mockUsers = {
   "550e8400-e29b-41d4-a716-446655440001": {
