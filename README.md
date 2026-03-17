@@ -635,25 +635,3 @@ npm run build
 Os arquivos prontos para produção estarão no diretório `.next`.
 
 ---
-
-## 📖 Recursos de Aprendizado
-
-- **Documentação Next.js:** https://nextjs.org/docs
-- **Documentação React:** https://react.dev
-- **TypeScript Handbook:** https://www.typescriptlang.org/docs
-
----
-
-## 📝 Licença
-
-Este projeto é privado e não é licenciado para uso público.
-
----
-
-## 👤 Autor
-
-**Lucas Monte** - Desenvolvedor Principal
-
----
-
-**Última Atualização:** 2024
