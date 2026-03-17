@@ -15,9 +15,7 @@ Uma aplicação completa de gerenciamento de usuários com **CRUD (Criar, Ler, A
 - [Organização do Código](#organização-do-código)
 - [Guia de Componentes](#guia-de-componentes)
 - [Guia de Serviços](#guia-de-serviços)
-- [Scripts Disponíveis](#scripts-disponíveis)
-- [Implantação](#implantação)
-- [Contribuindo](#contribuindo)
+
 
 ---
 
